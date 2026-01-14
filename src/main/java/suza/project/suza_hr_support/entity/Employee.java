@@ -51,11 +51,6 @@ public class Employee extends AuditModel<String> {
     @Enumerated(EnumType.STRING)
     private EmployeeStatusEnum status;
 
-    // Self-reference: Many employees can report to one manager
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "managerId") // FK column
-    private Employee manager;
-
     // FK
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "departmentId", nullable = false)
@@ -64,18 +59,6 @@ public class Employee extends AuditModel<String> {
     // REVERSE R/SHIP MAPPING 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<LeaveRequest> leaveRequests = new ArrayList<>();
-
-    // Reverse side: One manager has many subordinates
-    @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Employee> subordinates = new ArrayList<>();
-
-    // Reviews where this employee is being reviewed
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PerformanceReview> receivedReviews = new ArrayList<>();
-
-    // Reviews written by this employee as reviewer
-    @OneToMany(mappedBy = "reviewer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PerformanceReview> writtenReviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Attendance> attendances = new ArrayList<>();

@@ -10,16 +10,9 @@ import org.springframework.stereotype.Service;
 import suza.project.suza_hr_support.dto.AttendDTO;
 import suza.project.suza_hr_support.entity.Attendance;
 import suza.project.suza_hr_support.entity.Employee;
-import suza.project.suza_hr_support.exception.ApiRequestException;
 import suza.project.suza_hr_support.repository.AttendRepository;
 import suza.project.suza_hr_support.repository.EmpRepository;
 
-// import hm.project.hrsupport.dto.AttendDTO;
-// import hm.project.hrsupport.entity.Attendance;
-// import hm.project.hrsupport.entity.Employee;
-// import hm.project.hrsupport.exception.ApiRequestException;
-// import hm.project.hrsupport.repository.AttendRepository;
-// import hm.project.hrsupport.repository.EmpRepository;
 
 @Service
 public class AttendService {
@@ -48,7 +41,7 @@ public class AttendService {
         Attendance attend = modelMapper.map(attendDTO, Attendance.class);
 
         Employee emp = empRepository.findById(attendDTO.getEmployeeId())
-                .orElseThrow(()-> new ApiRequestException("Employee ID not found"));
+                .orElseThrow(()-> new IllegalStateException("Employee ID not found"));
         attend.setEmployee(emp);
         Attendance saveAttendance = attendRepository.save(attend);
         return modelMapper.map(saveAttendance, AttendDTO.class);
@@ -57,7 +50,7 @@ public class AttendService {
 
     public AttendDTO getAttendanceById(Long id) {
         Attendance attend = attendRepository.findById(id)
-                    .orElseThrow(()-> new ApiRequestException("attendance not found with id "+id));
+                    .orElseThrow(()-> new IllegalStateException("attendance not found with id "+id));
         return modelMapper.map(attend, AttendDTO.class);
     }
 
@@ -70,11 +63,11 @@ public class AttendService {
  public AttendDTO editAttendance(Long id, AttendDTO attendDTO) {
     // Fetch existing attendance
     Attendance attendance = attendRepository.findById(id)
-            .orElseThrow(() -> new ApiRequestException("Attendance not found"));
+            .orElseThrow(() -> new IllegalStateException("Attendance not found"));
 
     // Fetch employee first
     Employee empAttend = empRepository.findById(attendDTO.getEmployeeId())
-            .orElseThrow(() -> new ApiRequestException("Employee not found"));
+            .orElseThrow(() -> new IllegalStateException("Employee not found"));
     attendance.setEmployee(empAttend);
 
     // Map all fields from DTO to entity except employee

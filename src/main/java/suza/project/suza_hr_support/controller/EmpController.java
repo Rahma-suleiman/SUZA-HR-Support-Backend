@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import suza.project.suza_hr_support.dto.EmpDTO;
-import suza.project.suza_hr_support.dto.PerformReviewDTO;
 import suza.project.suza_hr_support.service.EmpService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,18 +50,7 @@ public class EmpController {
         EmpDTO emp = empService.editEmployee(id, empDTO);
         return new ResponseEntity<>(emp,HttpStatus.OK);
     }
-    // Employee sees their own reviews
-    @GetMapping("/{id}/reviews/received")
-    public ResponseEntity<List<PerformReviewDTO>> getMyReviews(@PathVariable Long id) {
-        List<PerformReviewDTO> myReview = empService.getMyReviews(id);
-        return ResponseEntity.ok(myReview);
-    }     
-    // Manager sees reviews they wrote
-    @GetMapping("/{id}/reviews/written")
-    public ResponseEntity<List<PerformReviewDTO>> getReviewsWrittenByMe(@PathVariable Long id) {
-        List<PerformReviewDTO> myReview = empService.getReviewsWrittenByMe(id);
-        return ResponseEntity.ok(myReview);
-    }
+
     //soft delete/ deactivate
     @DeleteMapping("/{id}/deactivate")
     public ResponseEntity<String> deactivateEmployee(@PathVariable Long id){

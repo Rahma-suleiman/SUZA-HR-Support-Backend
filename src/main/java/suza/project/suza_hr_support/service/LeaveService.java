@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import suza.project.suza_hr_support.dto.LeaveRequestDTO;
 import suza.project.suza_hr_support.entity.Employee;
 import suza.project.suza_hr_support.entity.LeaveRequest;
-import suza.project.suza_hr_support.exception.ApiRequestException;
 import suza.project.suza_hr_support.repository.EmpRepository;
 import suza.project.suza_hr_support.repository.LeaveRepository;
 
@@ -26,7 +25,7 @@ public class LeaveService {
 
         Employee employee = empRepository.findById(leaveRequestDTO.getEmployeeId())
                 .orElseThrow(
-                        () -> new ApiRequestException("Employee not found with id" + leaveRequestDTO.getEmployeeId()));
+                        () -> new IllegalStateException("Employee not found with id" + leaveRequestDTO.getEmployeeId()));
         leave.setEmployee(employee);
         LeaveRequest savedLeave = leaveRepository.save(leave);
         LeaveRequestDTO leaveDtoResponse = modelMapper.map(savedLeave, LeaveRequestDTO.class);
@@ -47,7 +46,7 @@ public class LeaveService {
     public LeaveRequestDTO editLeave(Long id, LeaveRequestDTO leaveRequestDTO) {
 
         LeaveRequest existingLeave = leaveRepository.findById(id)
-                .orElseThrow(() -> new ApiRequestException("Leave not found with id" + id));
+                .orElseThrow(() -> new IllegalStateException("Leave not found with id" + id));
             
         modelMapper.map(leaveRequestDTO, existingLeave);
 
@@ -56,7 +55,7 @@ public class LeaveService {
 
         if (leaveRequestDTO.getEmployeeId() != null) {
             Employee employee = empRepository.findById(leaveRequestDTO.getEmployeeId())
-                    .orElseThrow(() -> new ApiRequestException("Employee not found with id" + leaveRequestDTO.getEmployeeId()));
+                    .orElseThrow(() -> new IllegalStateException("Employee not found with id" + leaveRequestDTO.getEmployeeId()));
             existingLeave.setEmployee(employee);            
         }
 

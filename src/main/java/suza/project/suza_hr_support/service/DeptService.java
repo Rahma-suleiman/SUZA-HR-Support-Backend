@@ -11,7 +11,6 @@ import suza.project.suza_hr_support.dto.DeptDTO;
 import suza.project.suza_hr_support.dto.EmpDTO;
 import suza.project.suza_hr_support.entity.Department;
 import suza.project.suza_hr_support.entity.Employee;
-import suza.project.suza_hr_support.exception.ApiRequestException;
 import suza.project.suza_hr_support.repository.DeptRepository;
 
 
@@ -56,13 +55,13 @@ public class DeptService {
 
     // public DeptDTO getDeptById(Long id) {
     // Department deptId = deptRepository.findById(id)
-    // .orElseThrow(() -> new ApiRequestException("Department not found with id" +
+    // .orElseThrow(() -> new IllegalStateException("Department not found with id" +
     // id));
     // return modelMapper.map(deptId, DeptDTO.class);
     // }
     public DeptDTO getDeptById(Long id) {
         Department dept = deptRepository.findById(id)
-                .orElseThrow(() -> new ApiRequestException("Department not found with id" + id));
+                .orElseThrow(() -> new IllegalStateException("Department not found with id" + id));
 
         DeptDTO deptDto = modelMapper.map(dept, DeptDTO.class);
 
@@ -80,8 +79,8 @@ public class DeptService {
         // check if department exists by name
         Optional<Department> isDeptExist = deptRepository.findByName(deptDTO.getName());
         if (isDeptExist.isPresent()) {
-            // throw new ApiRequestException("department exist");
-            throw new ApiRequestException("Department with name " + deptDTO.getName() + " already exists");
+            // throw new IllegalStateException("department exist");
+            throw new IllegalStateException("Department with name " + deptDTO.getName() + " already exists");
         }
 
         Department saveDept = deptRepository.save(department);
@@ -90,7 +89,7 @@ public class DeptService {
 
     public DeptDTO editDepartment(Long id, DeptDTO deptDTO) {
         Department existingDepart = deptRepository.findById(id)
-                .orElseThrow(() -> new ApiRequestException("Department ID not found"));
+                .orElseThrow(() -> new IllegalStateException("Department ID not found"));
         deptDTO.setId(existingDepart.getId());
         modelMapper.map(deptDTO, existingDepart);
         Department updatedDept = deptRepository.save(existingDepart);
@@ -103,7 +102,7 @@ public class DeptService {
 
     public List<EmpDTO> getDeptByIdEmps(Long id) {
         Department department = deptRepository.findById(id)
-                .orElseThrow(() -> new ApiRequestException("Department not found"));
+                .orElseThrow(() -> new IllegalStateException("Department not found"));
         return department.getEmployees().stream()
                 .map(emp -> {
                     EmpDTO empDto = modelMapper.map(emp, EmpDTO.class);
