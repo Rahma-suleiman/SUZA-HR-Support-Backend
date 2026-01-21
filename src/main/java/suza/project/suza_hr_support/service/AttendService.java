@@ -89,14 +89,12 @@ public class AttendService {
 //   "checkInTime": "08:15",
 //   "checkOutTime": "17:30",
 //   "status": "PRESENT",
-//   "employeeId": 5,
-//   "signature": "iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAA..."
+//   "employeeId": 1
 // }
 // {
 //     "date": "2025-09-20",
 //     "checkInTime": "08:15",
 //     "checkOutTime": "17:30",
 //     "status": "PRESENT",
-//     "employeeId": 5,
-//     "signature": "iVBORw0KGgoAAAANSUhEUgAAAoAAAAHgCAYAAAA10dzkAA1..."
-//   }
+//     "employeeId": 2
+// }

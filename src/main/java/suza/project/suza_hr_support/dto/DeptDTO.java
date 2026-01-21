@@ -18,8 +18,5 @@ public class DeptDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private List<Long> employeeIds;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private List<Long> jobPostingIds ;
-
 
 }

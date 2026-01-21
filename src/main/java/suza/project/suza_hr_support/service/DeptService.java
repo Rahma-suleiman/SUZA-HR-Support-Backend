@@ -100,7 +100,7 @@ public class DeptService {
         deptRepository.deleteById(id);
     }
 
-    public List<EmpDTO> getDeptByIdEmps(Long id) {
+    public List<EmpDTO> getEmpsByIdDeptId(Long id) {
         Department department = deptRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Department not found"));
         return department.getEmployees().stream()

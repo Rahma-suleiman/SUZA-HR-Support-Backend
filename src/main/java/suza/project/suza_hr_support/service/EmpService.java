@@ -204,7 +204,21 @@ public class EmpService {
 // "position": "Software Engineer",
 // "salary": 1200000,
 // "status": "ACTIVE",
-// "departmentId": 2
+// "departmentId": 1
+// }
+// {
+//   "firstName": "Shuayb",
+//   "lastName": "Mohd",
+//   "email": "shuayb123@gmail.com",
+//   "phone": "0657845601",
+//   "address": "bububu",
+//   "gender": "Male",
+//   "dob": "2001-01-15",
+//   "hireDate": "2025-02-15",
+//   "position": "Programmer",
+//   "salary": 1500000,
+//   "status": "ACTIVE",
+//   "departmentId": 1
 // }
 // {
 // "firstName": "Amina",
@@ -215,26 +229,10 @@ public class EmpService {
 // "gender": "Female",
 // "dob": "1995-06-12",
 // "hireDate": "2023-03-15",
-// "position": "Software Engineer",
+// "position": "HR Supervisor",
 // "salary": 1500000,
 // "status": "ACTIVE",
-// "managerId": 1,
 // "departmentId": 3
-// }
-// {
-// "firstName": "Amina",
-// "lastName": "Haron",
-// "email": "emm@example.com",
-// "phone": "+255765256701",
-// "address": "Vuga",
-// "gender": "Female",
-// "dob": "1998-04-15",
-// "hireDate": "2023-08-01",
-// "position": "Marketing",
-// "salary": 1400000,
-// "status": "ACTIVE",
-// "managerId": 2,
-// "departmentId": 2
 // }
 // {
 // "firstName": "Kauthar",
@@ -248,6 +246,5 @@ public class EmpService {
 // "position": "Accoun",
 // "salary": 1200000,
 // "status": "ACTIVE",
-// "managerId": 1,
-// "departmentId": 1
+// "departmentId": 2
 // }

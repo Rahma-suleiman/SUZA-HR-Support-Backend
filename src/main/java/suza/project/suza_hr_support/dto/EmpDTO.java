@@ -30,14 +30,11 @@ public class EmpDTO {
     private Integer salary;
     private String status; 
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY) // Only visible in response
-    private List<Long> subordinateIds; 
-
     private Long departmentId;
 
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long payroll;
+    // @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    // private Long payroll;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private List<Long> leaveRequestIds ;

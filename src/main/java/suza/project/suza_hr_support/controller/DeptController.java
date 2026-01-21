@@ -40,9 +40,14 @@ public class DeptController {
         DeptDTO deptId = deptService.getDeptById(id);
         return ResponseEntity.ok(deptId);
     }
+    // @GetMapping("/{id}/employees")
+    // public ResponseEntity<List<EmpDTO>> getDeptByIdEmps(@PathVariable Long id) {
+    //     List<EmpDTO> empDTOs = deptService.getDeptByIdEmps(id);
+    //     return ResponseEntity.ok(empDTOs);
+    // }
     @GetMapping("/{id}/employees")
-    public ResponseEntity<List<EmpDTO>> getDeptByIdEmps(@PathVariable Long id) {
-        List<EmpDTO> empDTOs = deptService.getDeptByIdEmps(id);
+    public ResponseEntity<List<EmpDTO>> getEmpsByIdDeptId(@PathVariable Long id) {
+        List<EmpDTO> empDTOs = deptService.getEmpsByIdDeptId(id);
         return ResponseEntity.ok(empDTOs);
     }
     @PostMapping

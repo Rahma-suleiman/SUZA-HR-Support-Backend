@@ -30,8 +30,6 @@ public class AttendDTO {
     private LocalTime checkOutTime;
 
     private AttendanceStatusEnum status;
-    
-    private String signature ;
 
     private Long employeeId;
 
