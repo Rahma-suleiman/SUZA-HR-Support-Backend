@@ -15,35 +15,58 @@ public class Payroll {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // FK - Employee
+    // ========================
+    // Employee Reference
+    // ========================
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 
-    // Payroll date (month/year can be derived from this)
-    private LocalDate date;
+    // Snapshot fields (important for payslip history)
+    private String employeeCode;      // EMP-0012
+    private String employeeName;      // Rahma Suleiman
+    private String departmentName;    // Accountancy
+    private String positionName;      // Accountant
 
-    // Salary
+    // ========================
+    // Payroll Period
+    // ========================
+    // private Integer payrollMonth;     // 1 - 12
+    // private Integer payrollYear;      // 2026
+    private LocalDate payrollDate;    
+
+    // ========================
+    // Earnings
+    // ========================
     private Integer basicSalary;
-
-    // Allowances
-    private Integer transportAllowance;
     private Integer housingAllowance;
+    private Integer transportAllowance;
+    // private Integer overtimePay;
 
+    private Integer grossSalary;
+
+    // ========================
     // Deductions
+    // ========================
     private Integer paye;
     private Integer nssf;
     private Integer nhif;
+    private Integer loanDeduction;
 
-    // Totals
-    private Integer grossSalary;
     private Integer totalDeduction;
+
+    // ========================
+    // Net Pay
+    // ========================
     private Integer netSalary;
 
-    // Payroll status
+    private String currency = "TZS";
+
+    // ========================
+    // Payroll Status
+    // ========================
     @Enumerated(EnumType.STRING)
     private PayrollStatus status;
 
-    // Payment date
-    private LocalDate paymentDate;
+    // private LocalDate paymentDate;
 }

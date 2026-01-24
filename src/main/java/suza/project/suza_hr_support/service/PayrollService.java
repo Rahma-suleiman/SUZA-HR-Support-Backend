@@ -1,5 +1,6 @@
 package suza.project.suza_hr_support.service;
 
+import java.time.LocalDate;
 // import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,19 +55,64 @@ public class PayrollService {
         return dto;
     }
 
-    public PayrollDTO createPayroll(PayrollDTO dto) {
-        Payroll payroll = modelMapper.map(dto, Payroll.class);
+    // public PayrollDTO createPayroll(PayrollDTO dto) {
+    // Payroll payroll = modelMapper.map(dto, Payroll.class);
 
-        // set employee
-        if (dto.getEmployeeId() == null)
+    // // set employee
+    // if (dto.getEmployeeId() == null)
+    // throw new IllegalStateException("EmployeeId is required");
+
+    // Employee emp = empRepository.findById(dto.getEmployeeId())
+    // .orElseThrow(() -> new IllegalStateException("Employee not found"));
+
+    // payroll.setEmployee(emp);
+    // payroll.setEmployeeName(emp.getFirstName()+ ""+emp.getLastName());
+    // payroll.setBasicSalary(emp.getSalary());
+
+    // // calculate totals
+    // payroll.setGrossSalary(calculateGross(payroll));
+    // payroll.setTotalDeduction(calculateDeduction(payroll));
+    // payroll.setNetSalary(payroll.getGrossSalary() - payroll.getTotalDeduction());
+
+    // // default status
+    // payroll.setStatus(dto.getStatus() == null ? PayrollStatus.DRAFT :
+    // dto.getStatus());
+
+    // Payroll saved = payrollRepository.save(payroll);
+
+    // return modelMapper.map(saved, PayrollDTO.class);
+    // }
+    // =========================
+    // CREATE
+    // =========================
+    public PayrollDTO createPayroll(PayrollDTO dto) {
+
+        if (dto.getEmployeeId() == null) {
             throw new IllegalStateException("EmployeeId is required");
+        }
 
         Employee emp = empRepository.findById(dto.getEmployeeId())
                 .orElseThrow(() -> new IllegalStateException("Employee not found"));
 
+        Payroll payroll = modelMapper.map(dto, Payroll.class);
+
+        // employee reference
         payroll.setEmployee(emp);
 
-        // calculate totals
+        // snapshot fields
+        // payroll.setEmployeeCode(emp.getEmployeeCode());
+        payroll.setEmployeeCode(emp.getEmpNo());
+        payroll.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
+        payroll.setDepartmentName(emp.getDepartment().getName());
+        payroll.setPositionName(emp.getPosition());
+        payroll.setBasicSalary(emp.getSalary());
+
+        // payroll metadata
+        payroll.setPayrollDate(LocalDate.now());
+        payroll.setCurrency("TZS");
+
+
+        // calculations
         payroll.setGrossSalary(calculateGross(payroll));
         payroll.setTotalDeduction(calculateDeduction(payroll));
         payroll.setNetSalary(payroll.getGrossSalary() - payroll.getTotalDeduction());
@@ -75,23 +121,40 @@ public class PayrollService {
         payroll.setStatus(dto.getStatus() == null ? PayrollStatus.DRAFT : dto.getStatus());
 
         Payroll saved = payrollRepository.save(payroll);
-
         return modelMapper.map(saved, PayrollDTO.class);
     }
 
+    // public PayrollDTO updatePayroll(Long id, PayrollDTO dto) {
+    //     Payroll payroll = payrollRepository.findById(id)
+    //             .orElseThrow(() -> new IllegalStateException("Payroll not found with id " + id));
+
+    //     modelMapper.map(dto, payroll);
+
+    //     // set employee if provided
+    //     if (dto.getEmployeeId() != null) {
+    //         Employee emp = empRepository.findById(dto.getEmployeeId())
+    //                 .orElseThrow(() -> new IllegalStateException("Employee not found"));
+    //         payroll.setEmployee(emp);
+    //     }
+
+    //     payroll.setGrossSalary(calculateGross(payroll));
+    //     payroll.setTotalDeduction(calculateDeduction(payroll));
+    //     payroll.setNetSalary(payroll.getGrossSalary() - payroll.getTotalDeduction());
+
+    //     Payroll updated = payrollRepository.save(payroll);
+    //     return modelMapper.map(updated, PayrollDTO.class);
+    // }
+ // =========================
+    // UPDATE
+    // =========================
     public PayrollDTO updatePayroll(Long id, PayrollDTO dto) {
+
         Payroll payroll = payrollRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Payroll not found with id " + id));
 
         modelMapper.map(dto, payroll);
 
-        // set employee if provided
-        if (dto.getEmployeeId() != null) {
-            Employee emp = empRepository.findById(dto.getEmployeeId())
-                    .orElseThrow(() -> new IllegalStateException("Employee not found"));
-            payroll.setEmployee(emp);
-        }
-
+        // recalculate totals
         payroll.setGrossSalary(calculateGross(payroll));
         payroll.setTotalDeduction(calculateDeduction(payroll));
         payroll.setNetSalary(payroll.getGrossSalary() - payroll.getTotalDeduction());
@@ -99,7 +162,6 @@ public class PayrollService {
         Payroll updated = payrollRepository.save(payroll);
         return modelMapper.map(updated, PayrollDTO.class);
     }
-
     @Transactional
     public void deletePayroll(Long id) {
         Payroll payroll = payrollRepository.findById(id)
@@ -107,16 +169,42 @@ public class PayrollService {
         payrollRepository.delete(payroll);
     }
 
-    // helper methods
+    // =========================
+    // CALCULATIONS
+    // =========================
     private Integer calculateGross(Payroll p) {
         return p.getBasicSalary()
-                + (p.getTransportAllowance() == null ? 0 : p.getTransportAllowance())
-                + (p.getHousingAllowance() == null ? 0 : p.getHousingAllowance());
+                + (p.getHousingAllowance() == null ? 0 : p.getHousingAllowance())
+                + (p.getTransportAllowance() == null ? 0 : p.getTransportAllowance());
+                // + (p.getOvertimePay() == null ? 0 : p.getOvertimePay());
     }
 
     private Integer calculateDeduction(Payroll p) {
         return (p.getPaye() == null ? 0 : p.getPaye())
                 + (p.getNssf() == null ? 0 : p.getNssf())
-                + (p.getNhif() == null ? 0 : p.getNhif());
+                + (p.getNhif() == null ? 0 : p.getNhif())
+                + (p.getLoanDeduction() == null ? 0 : p.getLoanDeduction());
     }
 }
+// {
+// "employeeId": 2,
+// "payrollDate": "2025-11-22",
+// "transportAllowance": 10000,
+// "housingAllowance": 30000,
+// "paye": 5000,
+// "nssf": 2000,
+// "nhif": 0,
+// "status": "PAID",
+// "paymentDate": "2025-11-23"
+// }
+// {
+// "employeeId": 1,
+// "payrollDate": "2025-11-22",
+// "transportAllowance": 10000,
+// "housingAllowance": 30000,
+// "paye": 5000,
+// "nssf": 2000,
+// "nhif": 0,
+// "status": "PAID",
+// "paymentDate": "2025-11-23"
+// }
