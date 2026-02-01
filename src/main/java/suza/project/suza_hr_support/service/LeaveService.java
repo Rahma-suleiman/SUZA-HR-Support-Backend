@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import suza.project.suza_hr_support.dto.LeaveRequestDTO;
 import suza.project.suza_hr_support.entity.Employee;
 import suza.project.suza_hr_support.entity.LeaveRequest;
+import suza.project.suza_hr_support.enums.EmployeeStatusEnum;
+import suza.project.suza_hr_support.enums.LeaveStatusEnum;
 import suza.project.suza_hr_support.repository.EmpRepository;
 import suza.project.suza_hr_support.repository.LeaveRepository;
 
@@ -20,6 +22,7 @@ public class LeaveService {
     private final EmpRepository empRepository;
     private final ModelMapper modelMapper;
 
+
     public LeaveRequestDTO createLeave(LeaveRequestDTO leaveRequestDTO) {
         LeaveRequest leave = modelMapper.map(leaveRequestDTO, LeaveRequest.class);
 
@@ -27,6 +30,11 @@ public class LeaveService {
                 .orElseThrow(
                         () -> new IllegalStateException("Employee not found with id" + leaveRequestDTO.getEmployeeId()));
         leave.setEmployee(employee);
+        if (leave.getStatus() == LeaveStatusEnum.APPROVED) {
+            employee.setStatus(EmployeeStatusEnum.ON_LEAVE);
+        }
+        leave.setEmpName(employee.getFirstName()+ " " +employee.getLastName());
+        // leave.setEmpName(employee.getFirstName()+ " " +employee.getLastName());
         LeaveRequest savedLeave = leaveRepository.save(leave);
         LeaveRequestDTO leaveDtoResponse = modelMapper.map(savedLeave, LeaveRequestDTO.class);
         return leaveDtoResponse;
@@ -71,7 +79,6 @@ public class LeaveService {
 }
 // {
 // "leaveType": "SICK",
-// "status": "APPROVED",
 // "startDate": "2025-09-03T08:30:00.000Z",
 // "endDate": "2025-09-05T17:00:00.000Z",
 // "reason": "Flu and doctor's advice to rest",
@@ -79,10 +86,15 @@ public class LeaveService {
 // }
 // {
 //   "leaveType": "VACATION",
-//   "status": "APPROVED",
 //   "startDate": "2025-12-20T09:00:00.000Z",
 //   "endDate": "2025-12-27T17:00:00.000Z",
 //   "reason": "Family vacation",
 //   "employeeId": 2
 // }
-
+// {
+//   "leaveType": "STUDY",
+//   "startDate": "2026-01-3",
+//   "endDate": "2026-02-12",
+//   "reason": "leave for study",
+//   "employeeId": 3
+// }

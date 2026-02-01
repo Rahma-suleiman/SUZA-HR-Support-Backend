@@ -20,7 +20,7 @@ public class LeaveRequest extends AuditModel<String> {
     private LeaveTypeEnum leaveType;
 
     @Enumerated(EnumType.STRING)
-    private LeaveStatusEnum status;
+    private LeaveStatusEnum status = LeaveStatusEnum.PENDING;
 
     private Date startDate;
 
@@ -28,6 +28,8 @@ public class LeaveRequest extends AuditModel<String> {
 
     private String reason;
     
+    private String empName;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employeeId", nullable = false)
     private Employee employee;

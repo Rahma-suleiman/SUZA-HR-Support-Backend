@@ -143,46 +143,6 @@ public class EmpService {
         }
 
 
-
-        // RECOMMENDED
-        // ✅ Instead, you would SOFT DELETE (mark as INACTIVE or TERMINATED) so history
-        // stays intact.
-        // This performs a soft delete (marks employee as INACTIVE instead of removing
-        // them permanently
-
-        @Transactional
-        public void deactivateEmployee(Long id) {
-                Employee emp = empRepository.findById(id)
-                                .orElseThrow(() -> new IllegalStateException("Employee not found with id " + id));
-
-                if (emp.getStatus() == EmployeeStatusEnum.INACTIVE) {
-                        throw new IllegalStateException("Employee with id " + id + " is already inactive");
-                }
-                emp.setStatus(EmployeeStatusEnum.INACTIVE);
-                empRepository.save(emp);
-        }
-
-        @Transactional
-        public void activateEmployee(Long id) {
-                Employee emp = empRepository.findById(id)
-                                .orElseThrow(() -> new IllegalStateException("Employee not found with id " + id));
-
-                if (emp.getStatus() == EmployeeStatusEnum.ACTIVE) {
-                        throw new IllegalStateException("Employee with id " + id + " is already active");
-                }
-                emp.setStatus(EmployeeStatusEnum.ACTIVE);
-                empRepository.save(emp);
-        }
-
-        // Not really. Employees are usually never HARD-DELETED, because you need
-        // their history (who worked, reviews, promotions, etc.).
-
-        // Delete employee → automatically delete recruitment + children
-        // BUT make sure in employee entity all FK with @OneToMany(mappedBy = "",
-        // cascade = CascadeType.ALL, orphanRemoval = true)
-        // AND in recruitment u shld hv smthing like this
-        // @OneToOne(mappedBy = "recruitment", cascade = CascadeType.ALL, orphanRemoval=
-        // true)
         @Transactional
         public void deleteEmployeeById(Long id) {
                 Employee emp = empRepository.findById(id)
@@ -247,4 +207,18 @@ public class EmpService {
 // "salary": 1200000,
 // "status": "ACTIVE",
 // "departmentId": 2
+// }
+// {
+//   "firstName": "Lilly",
+//   "lastName": "Simon",
+//   "email": "lili123@gmail.com",
+//   "phone": "07289384589",
+//   "address": "Kiwengwa",
+//   "gender": "FEMALE",
+//   "dob": "1998-01-30",
+//   "hireDate": "2024-05-05",
+//   "position": "Lab technician",
+//   "salary": 480000,
+//   "status": "ACTIVE",
+//   "departmentId": 3
 // }

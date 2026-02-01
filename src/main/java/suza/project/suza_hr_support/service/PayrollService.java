@@ -99,15 +99,14 @@ public class PayrollService {
         // employee reference
         payroll.setEmployee(emp);
 
-        // snapshot fields
-        // payroll.setEmployeeCode(emp.getEmployeeCode());
+        // payroll.setEmployeeCode(emp.getEmpNo());
         payroll.setEmployeeCode(emp.getEmpNo());
         payroll.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
+        // payroll.setDepartmentName(emp.getDepartment().getName());
         payroll.setDepartmentName(emp.getDepartment().getName());
         payroll.setPositionName(emp.getPosition());
         payroll.setBasicSalary(emp.getSalary());
 
-        // payroll metadata
         payroll.setPayrollDate(LocalDate.now());
         payroll.setCurrency("TZS");
 

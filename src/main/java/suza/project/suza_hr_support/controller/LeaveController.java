@@ -42,7 +42,7 @@ public class LeaveController {
         LeaveRequestDTO leaveDto = leaveService.editLeave(id, leaveRequestDTO);
         return ResponseEntity.ok(leaveDto);
     }
-     @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteLeave(@PathVariable Long id) {
         leaveService.deleteLeave(id);
         return ResponseEntity.noContent().build();

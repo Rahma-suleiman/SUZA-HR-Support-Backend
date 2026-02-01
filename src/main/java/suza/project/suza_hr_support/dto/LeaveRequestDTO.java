@@ -14,15 +14,19 @@ public class LeaveRequestDTO {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
-
+    
     private LeaveTypeEnum leaveType;
-
+    
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LeaveStatusEnum status;
-
+    
     private Date startDate;
     private Date endDate;
-
+    
     private String reason;
+    
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String empName;
 
     private Long employeeId;
 

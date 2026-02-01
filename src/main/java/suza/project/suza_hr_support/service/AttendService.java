@@ -16,8 +16,7 @@ import suza.project.suza_hr_support.repository.EmpRepository;
 
 @Service
 public class AttendService {
-    
-    @Autowired
+
     private AttendRepository attendRepository;
     private ModelMapper modelMapper;
     private EmpRepository empRepository;

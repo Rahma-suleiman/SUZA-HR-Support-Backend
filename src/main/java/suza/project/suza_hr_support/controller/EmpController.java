@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 
-
-
 @RestController
 @RequestMapping("/api/v2/hrsupport/employee")
 // @CrossOrigin(origins = "http://localhost:5173")  // Allow React frontend (for testing purpose)
@@ -51,18 +49,7 @@ public class EmpController {
         return new ResponseEntity<>(emp,HttpStatus.OK);
     }
 
-    //soft delete/ deactivate
-    @DeleteMapping("/{id}/deactivate")
-    public ResponseEntity<String> deactivateEmployee(@PathVariable Long id){
-        empService.deactivateEmployee(id);
-        return ResponseEntity.ok("Employee deactivated successfully");
-    }
-    //Reactivate Employee
-    @PutMapping("/{id}/activate")
-    public ResponseEntity<String> activateEmployee(@PathVariable Long id){
-        empService.activateEmployee(id);
-        return ResponseEntity.ok("Employee reactivated successfully");
-    }
+  
     //HARD/Permanent DELETE though not advisable
     @DeleteMapping("/{id}/permanent")
     public ResponseEntity<String> deleteEmployeeById(@PathVariable Long id) {
