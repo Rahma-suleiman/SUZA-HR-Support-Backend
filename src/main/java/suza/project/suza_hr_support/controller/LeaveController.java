@@ -1,10 +1,12 @@
 package suza.project.suza_hr_support.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import suza.project.suza_hr_support.dto.LeaveRequestDTO;
+import suza.project.suza_hr_support.enums.LeaveStatusEnum;
 import suza.project.suza_hr_support.service.LeaveService;
 
 import java.util.List;
@@ -18,34 +20,53 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
-
-
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v2/hrsupport/leave")
 public class LeaveController {
     private final LeaveService leaveService;
-    
+
     @PostMapping
     public ResponseEntity<LeaveRequestDTO> createLeave(@RequestBody LeaveRequestDTO leaveRequestDTO) {
         LeaveRequestDTO leave = leaveService.createLeave(leaveRequestDTO);
         return new ResponseEntity<>(leave, HttpStatus.CREATED);
     }
+
     @GetMapping
     public ResponseEntity<List<LeaveRequestDTO>> getAllLeaves() {
         List<LeaveRequestDTO> leave = leaveService.getAllLeaves();
         return ResponseEntity.ok(leave);
     }
+
     @PutMapping("/{id}")
-    public ResponseEntity<LeaveRequestDTO> editLeave(@PathVariable Long id, @RequestBody LeaveRequestDTO leaveRequestDTO) {
+    public ResponseEntity<LeaveRequestDTO> editLeave(@PathVariable Long id,
+            @RequestBody LeaveRequestDTO leaveRequestDTO) {
         LeaveRequestDTO leaveDto = leaveService.editLeave(id, leaveRequestDTO);
         return ResponseEntity.ok(leaveDto);
     }
+
+    // HR Approve/reject leave{sending status as request body}
+    @PutMapping("/{id}/status")
+    public ResponseEntity<LeaveRequestDTO> updateLeaveStatus(@PathVariable Long id,
+            @RequestBody LeaveStatusEnum newStatus) {
+        LeaveRequestDTO updatedLeave = leaveService.updateLeaveStatus(id, newStatus);
+        return ResponseEntity.ok(updatedLeave);
+    }
+    
+    // HR Approve/reject leave{sending status as request parameter(String)}
+    // @PutMapping("/{id}/status")
+    // public ResponseEntity<LeaveRequestDTO> updateLeaveStatus(
+    //         @PathVariable Long id,
+    //         @RequestParam LeaveStatusEnum status) {
+
+    //     LeaveRequestDTO updatedLeave = leaveService.updateLeaveStatus(id, status);
+    //     return ResponseEntity.ok(updatedLeave);
+    // }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteLeave(@PathVariable Long id) {
         leaveService.deleteLeave(id);
         return ResponseEntity.noContent().build();
     }
-    
+
 }
