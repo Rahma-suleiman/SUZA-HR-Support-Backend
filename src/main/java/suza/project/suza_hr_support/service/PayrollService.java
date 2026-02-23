@@ -36,7 +36,6 @@ public class PayrollService {
                 dto.setEmployeeName(
                         payroll.getEmployee().getFirstName() + " " + payroll.getEmployee().getLastName());
             }
-
             return dto;
         }).collect(Collectors.toList());
     }
@@ -52,39 +51,11 @@ public class PayrollService {
             dto.setEmployeeName(
                     payroll.getEmployee().getFirstName() + " " + payroll.getEmployee().getLastName());
         }
+
         return dto;
     }
 
-    // public PayrollDTO createPayroll(PayrollDTO dto) {
-    // Payroll payroll = modelMapper.map(dto, Payroll.class);
-
-    // // set employee
-    // if (dto.getEmployeeId() == null)
-    // throw new IllegalStateException("EmployeeId is required");
-
-    // Employee emp = empRepository.findById(dto.getEmployeeId())
-    // .orElseThrow(() -> new IllegalStateException("Employee not found"));
-
-    // payroll.setEmployee(emp);
-    // payroll.setEmployeeName(emp.getFirstName()+ ""+emp.getLastName());
-    // payroll.setBasicSalary(emp.getSalary());
-
-    // // calculate totals
-    // payroll.setGrossSalary(calculateGross(payroll));
-    // payroll.setTotalDeduction(calculateDeduction(payroll));
-    // payroll.setNetSalary(payroll.getGrossSalary() - payroll.getTotalDeduction());
-
-    // // default status
-    // payroll.setStatus(dto.getStatus() == null ? PayrollStatus.DRAFT :
-    // dto.getStatus());
-
-    // Payroll saved = payrollRepository.save(payroll);
-
-    // return modelMapper.map(saved, PayrollDTO.class);
-    // }
-    // =========================
-    // CREATE
-    // =========================
+    
     public PayrollDTO createPayroll(PayrollDTO dto) {
 
         if (dto.getEmployeeId() == null) {
@@ -102,7 +73,6 @@ public class PayrollService {
         // payroll.setEmployeeCode(emp.getEmpNo());
         payroll.setEmployeeCode(emp.getEmpNo());
         payroll.setEmployeeName(emp.getFirstName() + " " + emp.getLastName());
-        // payroll.setDepartmentName(emp.getDepartment().getName());
         payroll.setDepartmentName(emp.getDepartment().getName());
         payroll.setPositionName(emp.getPosition());
         payroll.setBasicSalary(emp.getSalary());
@@ -110,7 +80,10 @@ public class PayrollService {
         payroll.setPayrollDate(LocalDate.now());
         payroll.setCurrency("TZS");
 
-
+        // ✅ DEFAULT loan deduction if not provided
+        if (payroll.getLoanDeduction() == null) {
+            payroll.setLoanDeduction(0);
+        }
         // calculations
         payroll.setGrossSalary(calculateGross(payroll));
         payroll.setTotalDeduction(calculateDeduction(payroll));
@@ -120,32 +93,13 @@ public class PayrollService {
         payroll.setStatus(dto.getStatus() == null ? PayrollStatus.DRAFT : dto.getStatus());
 
         Payroll saved = payrollRepository.save(payroll);
+        // payroll.setLoanDeduction()
+
         return modelMapper.map(saved, PayrollDTO.class);
     }
 
-    // public PayrollDTO updatePayroll(Long id, PayrollDTO dto) {
-    //     Payroll payroll = payrollRepository.findById(id)
-    //             .orElseThrow(() -> new IllegalStateException("Payroll not found with id " + id));
-
-    //     modelMapper.map(dto, payroll);
-
-    //     // set employee if provided
-    //     if (dto.getEmployeeId() != null) {
-    //         Employee emp = empRepository.findById(dto.getEmployeeId())
-    //                 .orElseThrow(() -> new IllegalStateException("Employee not found"));
-    //         payroll.setEmployee(emp);
-    //     }
-
-    //     payroll.setGrossSalary(calculateGross(payroll));
-    //     payroll.setTotalDeduction(calculateDeduction(payroll));
-    //     payroll.setNetSalary(payroll.getGrossSalary() - payroll.getTotalDeduction());
-
-    //     Payroll updated = payrollRepository.save(payroll);
-    //     return modelMapper.map(updated, PayrollDTO.class);
-    // }
- // =========================
-    // UPDATE
-    // =========================
+  
+  
     public PayrollDTO updatePayroll(Long id, PayrollDTO dto) {
 
         Payroll payroll = payrollRepository.findById(id)
@@ -161,6 +115,7 @@ public class PayrollService {
         Payroll updated = payrollRepository.save(payroll);
         return modelMapper.map(updated, PayrollDTO.class);
     }
+
     @Transactional
     public void deletePayroll(Long id) {
         Payroll payroll = payrollRepository.findById(id)
@@ -168,14 +123,11 @@ public class PayrollService {
         payrollRepository.delete(payroll);
     }
 
-    // =========================
     // CALCULATIONS
-    // =========================
     private Integer calculateGross(Payroll p) {
         return p.getBasicSalary()
                 + (p.getHousingAllowance() == null ? 0 : p.getHousingAllowance())
                 + (p.getTransportAllowance() == null ? 0 : p.getTransportAllowance());
-                // + (p.getOvertimePay() == null ? 0 : p.getOvertimePay());
     }
 
     private Integer calculateDeduction(Payroll p) {

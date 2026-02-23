@@ -133,3 +133,38 @@ public class LeaveService {
 // "reason": "leave for study",
 // "employeeId": 3
 // }
+// {
+//   "leaveType": "STUDY",
+//   "startDate": "2026-02-20T00:00:00.000Z",
+//   "endDate": "2026-02-25T00:00:00.000Z",
+//   "reason": "Professional accounting certification exams",
+//   "employeeId": 4
+// }
+// {
+//   "leaveType": "COMPASSIONATE",
+//   "startDate": "2026-02-15T00:00:00.000Z",
+//   "endDate": "2026-02-18T00:00:00.000Z",
+//   "reason": "Bereavement due to loss of a close family member",
+//   "employeeId": 3
+// }
+// {
+//   "leaveType": "MATERNITY",
+//   "startDate": "2026-04-01T00:00:00.000Z",
+//   "endDate": "2026-07-01T00:00:00.000Z",
+//   "reason": "Maternity leave as per company policy",
+//   "employeeId": 3
+// }
+// {
+//   "leaveType": "VACATION",
+//   "startDate": "2026-03-01T00:00:00.000Z",
+//   "endDate": "2026-03-10T00:00:00.000Z",
+//   "reason": "Annual family vacation",
+//   "employeeId": 1
+// }
+// {
+//   "leaveType": "SICK",
+//   "startDate": "2026-02-10T00:00:00.000Z",
+//   "endDate": "2026-02-12T00:00:00.000Z",
+//   "reason": "Severe flu and doctor recommended rest",
+//   "employeeId": 2
+// }

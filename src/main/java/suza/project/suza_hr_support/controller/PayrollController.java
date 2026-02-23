@@ -10,7 +10,8 @@ import suza.project.suza_hr_support.dto.PayrollDTO;
 import suza.project.suza_hr_support.service.PayrollService;
 
 @RestController
-@RequestMapping("/api/v1/payroll")
+// @RequestMapping("/api/v1/payroll")
+@RequestMapping("/api/v2/hrsupport/payroll")
 @AllArgsConstructor
 public class PayrollController {
 
