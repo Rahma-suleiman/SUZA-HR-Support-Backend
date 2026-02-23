@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.jspecify.annotations.Nullable;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -136,6 +137,28 @@ public class PayrollService {
                 + (p.getNhif() == null ? 0 : p.getNhif())
                 + (p.getLoanDeduction() == null ? 0 : p.getLoanDeduction());
     }
+public PayrollDTO updatePayrollStatus(Long id, PayrollStatus newStatus) {
+
+    Payroll payroll = payrollRepository.findById(id)
+            .orElseThrow(() -> new IllegalStateException("Payroll not found"));
+
+    // Employee emp = payroll.getEmployee();
+
+    payroll.setStatus(newStatus);
+
+    if (newStatus == PayrollStatus.APPROVED) {
+        payroll.setStatus(PayrollStatus.PAID);
+    } else if(newStatus == PayrollStatus.PROCESSED) {
+        payroll.setStatus(PayrollStatus.DRAFT);
+        
+    }
+    Payroll saved = payrollRepository.save(payroll);
+
+    return modelMapper.map(saved, PayrollDTO.class);
+}
+
+
+  
 }
 // {
 // "employeeId": 2,

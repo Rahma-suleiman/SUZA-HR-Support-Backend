@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
 import suza.project.suza_hr_support.dto.PayrollDTO;
+import suza.project.suza_hr_support.enums.PayrollStatus;
 import suza.project.suza_hr_support.service.PayrollService;
 
 @RestController
@@ -35,6 +36,15 @@ public class PayrollController {
     @PutMapping("/{id}")
     public ResponseEntity<PayrollDTO> updatePayroll(@PathVariable Long id, @RequestBody PayrollDTO dto) {
         return ResponseEntity.ok(payrollService.updatePayroll(id, dto));
+    }
+
+    @PutMapping("/{id}/payrollStatus")
+    public ResponseEntity<PayrollDTO> updatePayrollStatus(
+            @PathVariable Long id,
+            @RequestParam("newStatus") PayrollStatus newStatus) {  //Spring converts string → enum automatically
+
+        PayrollDTO updatedPayroll = payrollService.updatePayrollStatus(id, newStatus);
+        return ResponseEntity.ok(updatedPayroll);
     }
 
     @DeleteMapping("/{id}")

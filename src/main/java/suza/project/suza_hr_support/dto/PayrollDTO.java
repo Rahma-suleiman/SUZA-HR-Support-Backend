@@ -10,15 +10,9 @@ import suza.project.suza_hr_support.enums.PayrollStatus;
 @Data
 public class PayrollDTO {
 
-    // =========================
-    // System-generated fields
-    // =========================
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
-    // =========================
-    // Employee reference
-    // =========================
     private Long employeeId;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -40,28 +34,19 @@ public class PayrollDTO {
     // private Integer payrollYear;    // user selects
 
     private LocalDate payrollDate;
-    
-    // =========================
-    // Earnings (user inputs)
-    // =========================
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer basicSalary;
 
     private Integer housingAllowance;
     private Integer transportAllowance;
-    // private Integer overtimePay;
 
-    // =========================
-    // Deductions (user/system)
-    // =========================
     private Integer paye;
     private Integer nssf;
     private Integer nhif;
     private Integer loanDeduction;
 
-    // =========================
-    // Calculated fields (READ ONLY)
-    // =========================
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer grossSalary;
 
@@ -71,9 +56,7 @@ public class PayrollDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer netSalary;
 
-    // =========================
-    // Status & payment
-    // =========================
+ 
     private PayrollStatus status;
 
     // @JsonProperty(access = JsonProperty.Access.READ_ONLY)
