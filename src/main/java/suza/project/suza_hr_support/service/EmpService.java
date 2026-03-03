@@ -54,7 +54,7 @@ public class EmpService {
 
         public EmpDTO getEmployeeById(Long id) {
                 Employee emp = empRepository.findById(id)
-                                .orElseThrow(() -> new IllegalStateException("employee not found with id" + id));
+                                .orElseThrow(() -> new IllegalStateException("employee with id: " + id+" was not found "));
 
                 EmpDTO empDto = modelMapper.map(emp, EmpDTO.class);
 
